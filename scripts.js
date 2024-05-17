@@ -57,7 +57,7 @@ for (const [id, name] of Object.entries(authors)) {
 
 document.querySelector('[data-search-authors]').appendChild(authorsHtml)
 
-const setThemeStyles = (isDarkTheme) => {
+const setThemeStyles = (isDarkTheme) => { //Use the setThemeStyles function to set the theme. This maked=s the code more modular, more easier to manage and make changes in the future
     const themeValue = isDarkTheme ? 'night' : 'day';
     document.querySelector('[data-settings-theme]').value = themeValue
     document.documentElement.style.setProperty('--color-dark', isDarkTheme? '255, 255, 255' : '10, 10, 20');
@@ -68,14 +68,21 @@ if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').match
     setThemeStyles(true);} else {
         setThemeStyles(false)
 }
-document.querySelector('[data-list-button]').innerText = `Show more (${books.length - BOOKS_PER_PAGE})`
-document.querySelector('[data-list-button]').disabled = (matches.length - (page * BOOKS_PER_PAGE)) > 0
 
-document.querySelector('[data-list-button]').innerHTML = `
+const showMoreButton = () => {
+    const button = document.querySelector('[data-list-button]')
+    const remainingBooks = matches.length - (page * BOOKS_PER_PAGE);
+    button.innerText = `Show more (${remainingBooks})`;
+    button.disabled = remainingBooks <= 0;
+    button.innerHTML = `
     <span>Show more</span>
-    <span class="list__remaining"> (${(matches.length - (page * BOOKS_PER_PAGE)) > 0 ? (matches.length - (page * BOOKS_PER_PAGE)) : 0})</span>
-`
+    <span class="list__remaining"> (${remainingBooks > 0 ? remainingBooks : 0})</span>
+    `
+}
 
+showMoreButton() 
+
+ 
 document.querySelector('[data-search-cancel]').addEventListener('click', () => {
     document.querySelector('[data-search-overlay]').open = false
 })
