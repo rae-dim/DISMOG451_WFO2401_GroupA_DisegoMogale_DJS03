@@ -69,7 +69,7 @@ if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').match
         setThemeStyles(false)
 }
 
-const showMoreButton = () => {
+const showMoreButton = () => {  //added functionality to the show more button. Made the code more uunderstandable and eaisier to change
     const button = document.querySelector('[data-list-button]')
     const remainingBooks = matches.length - (page * BOOKS_PER_PAGE);
     button.innerText = `Show more (${remainingBooks})`;
@@ -82,27 +82,21 @@ const showMoreButton = () => {
 
 showMoreButton() 
 
- 
-document.querySelector('[data-search-cancel]').addEventListener('click', () => {
-    document.querySelector('[data-search-overlay]').open = false
-})
-
-document.querySelector('[data-settings-cancel]').addEventListener('click', () => {
-    document.querySelector('[data-settings-overlay]').open = false
-})
-
+const overlayToggle = (selector, state) => { //added the overlayToggle function for a reuseable function that can be used instead of repeationg code unnecessarily
+    document.querySelector(selector).open = state;
+};
+document.querySelector('[data-search-cancel]').addEventListener('click', () => overlayToggle('[data-search-overlay]', false));
+document.querySelector('[data-settings-cancel]').addEventListener('click', () => overlayToggle('[data-settings-overlay', false))
 document.querySelector('[data-header-search]').addEventListener('click', () => {
-    document.querySelector('[data-search-overlay]').open = true 
-    document.querySelector('[data-search-title]').focus()
+    overlayToggle('[data-search-overlay]', true);
+    document.querySelector('[data-search-title]').focus();
 })
-
-document.querySelector('[data-header-settings]').addEventListener('click', () => {
-    document.querySelector('[data-settings-overlay]').open = true 
-})
+document.querySelector('[data-header-settings]').addEventListener('click', () => toggleOverlay('[data-settings-overlay]', true));
+document.querySelector('[data-list-close]').addEventListener('click', () => toggleOverlay('[data-list-active]', false));
 
 document.querySelector('[data-list-close]').addEventListener('click', () => {
     document.querySelector('[data-list-active]').open = false
-})
+}) 
 
 document.querySelector('[data-settings-form]').addEventListener('submit', (event) => {
     event.preventDefault()
